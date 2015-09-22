@@ -1,14 +1,14 @@
 var API = {
 
-  apiHeader : "http://www.zillow.com/webservice/GetSearchResults.htm?",
-  zwsID : "zws-id=X1-ZWz1b0j5f2l72j_9hc6e",
-  rentZestimate : "rentzestimate=true",
+    apiHeader: "http://www.zillow.com/webservice/GetSearchResults.htm?",
+    zwsID: "zws-id=X1-ZWz1b0j5f2l72j_9hc6e",
+    rentZestimate: "rentzestimate=true",
 
-  getCall : function(address){
-    return this.apiHeader + this.zwsID + address + this.rentZestimate;
-    //return call;
+    getCall: function (address) {
+		return this.apiHeader + this.zwsID + address + this.rentZestimate;
+		//return call;
 
-  }
+	}
 };
 
 function Property(number, street, city, state, zip){
@@ -27,76 +27,77 @@ function Property(number, street, city, state, zip){
 		this.rEst = rEst;
 		this.rHigh = rHigh;
 		this.rRange = rHigh - rLow;
-	}
+	};
 
-  this.getPriceRentRatio = function(){
+  this.getPriceRentRatio = function ( ) {
     return this.pEst / this.rEst;
-  }
+  };
 
-  this.getPriceRentRatioLow = function(){
+  this.getPriceRentRatioLow = function ( ) {
 		return this.pEst / this.rLow;
-	}
+	};
 
-  this.getPriceRentRatioHigh = function(){
+  this.getPriceRentRatioHigh = function ( ) {
 		return this.pEst / this.rHigh;
-	}
+	};
 
-	this.getFullAddress = function(){
+	this.getFullAddress = function ( ) {
 		var address = this.number + " " + this.street + ", " + this.city +
       " " + this.state + ", " + this.zip;
       return address;
-	}
+	};
 
-	this.getNumber = function(){
+	this.getNumber = function ( ) {
 		return this.number;
-	}
+	};
 
-  this.getStreet = function(){
+  this.getStreet = function ( ) {
 		return this.street;
-	}
+	};
 
-	this.getCity = function(){
+	this.getCity = function ( ) {
 		return this.city;
-	}
+	};
 
-	this.getState = function(){
+	this.getState = function ( ) {
 		return this.state;
-	}
+	};
 
-	this.getZip = function(){
+	this.getZip = function ( ) {
 		return this.zip;
-	}
+	};
 
-	this.getPLow = function(){
+	this.getPLow = function ( ) {
 		return this.pLow;
-	}
+	};
 
-	this.getPEst = function(){
+	this.getPEst = function ( ) {
 		return this.pEst;
-	}
+	};
 
-	this.getPHigh = function(){
+	this.getPHigh = function ( ) {
 		return this.pHigh;
-	}
+	};
 
-	this.getPRange = function(){
+	this.getPRange = function ( ) {
 		return this.pRange;
-	}
+	};
 
-	this.getRLow = function(){
+	this.getRLow = function ( ) {
 		return this.rLow;
-	}
-	this.getREst = function(){
+	};
+  
+	this.getREst = function ( ) {
 		return this.rEst;
-	}
+	};
 
-	this.getRHigh = function(){
+	this.getRHigh = function ( ) {
 		return this.rHigh;
-	}
+	};
 
-	this.getRRange = function(){
+	this.getRRange = function ( ) {
 		return this.rRange;
-	}
+	};
 }
 
 var prop1 = new Property(1118, "N Congress St", "Ypsilanti", "MI", 48197);
