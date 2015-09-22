@@ -1,24 +1,21 @@
-var API = {
-
-    apiHeader: "http://www.zillow.com/webservice/GetSearchResults.htm?",
-    zwsID: "zws-id=X1-ZWz1b0j5f2l72j_9hc6e",
-    rentZestimate: "rentzestimate=true",
-
-    getCall: function (address) {
-		return this.apiHeader + this.zwsID + address + this.rentZestimate;
-		//return call;
-
-	}
-};
-
 function Property(number, street, city, state, zip){
   this.number = number;
   this.street = street;
   this.city = city;
   this.state = state;
   this.zip = zip;
+  this.pLow;
+  this.pEst;
+  this.pHigh;
+  this.pRange;
+  this.rLow;
+  this.rEst;
+  this.rHigh;
+  this.rRange;
+}
 
-  this.setValues = function(pLow, pEst, pHigh, rLow, rEst, rHigh){
+// Getters and setters for Property objects
+Property.prototype.setValues = function(pLow, pEst, pHigh, rLow, rEst, rHigh){
 		this.pLow = pLow;
 		this.pEst = pEst;
 		this.pHigh = pHigh;
@@ -27,83 +24,97 @@ function Property(number, street, city, state, zip){
 		this.rEst = rEst;
 		this.rHigh = rHigh;
 		this.rRange = rHigh - rLow;
-	};
+};
 
-  this.getPriceRentRatio = function ( ) {
-    return this.pEst / this.rEst;
-  };
+Property.prototype.getPriceRentRatio = function() {
+  return this.pEst / this.rEst;
+};
 
-  this.getPriceRentRatioLow = function ( ) {
-		return this.pEst / this.rLow;
-	};
+Property.prototype.getPriceRentRatioLow = function() {
+	return this.pEst / this.rLow;
+};
 
-  this.getPriceRentRatioHigh = function ( ) {
-		return this.pEst / this.rHigh;
-	};
+Property.prototype.getPriceRentRatioHigh = function() {
+	return this.pEst / this.rHigh;
+};
 
-	this.getFullAddress = function ( ) {
-		var address = this.number + " " + this.street + ", " + this.city +
-      " " + this.state + ", " + this.zip;
-      return address;
-	};
+Property.prototype.getFullAddress = function() {
+	var address = this.number + " " + this.street + ", " + this.city +
+    " " + this.state + ", " + this.zip;
+    return address;
+};
 
-	this.getNumber = function ( ) {
-		return this.number;
-	};
+Property.prototype.getNumber = function() {
+	return this.number;
+};
 
-  this.getStreet = function ( ) {
-		return this.street;
-	};
+Property.prototype.getStreet = function() {
+	return this.street;
+};
 
-	this.getCity = function ( ) {
-		return this.city;
-	};
+Property.prototype.getCity = function() {
+	return this.city;
+};
 
-	this.getState = function ( ) {
-		return this.state;
-	};
+Property.prototype.getState = function() {
+	return this.state;
+};
 
-	this.getZip = function ( ) {
-		return this.zip;
-	};
+Property.prototype.getZip = function() {
+	return this.zip;
+};
 
-	this.getPLow = function ( ) {
-		return this.pLow;
-	};
+Property.prototype.getPLow = function() {
+	return this.pLow;
+};
 
-	this.getPEst = function ( ) {
-		return this.pEst;
-	};
+Property.prototype.getPEst = function() {
+	return this.pEst;
+};
 
-	this.getPHigh = function ( ) {
-		return this.pHigh;
-	};
+Property.prototype.getPHigh = function() {
+	return this.pHigh;
+};
 
-	this.getPRange = function ( ) {
-		return this.pRange;
-	};
+Property.prototype.getPRange = function() {
+	return this.pRange;
+};
 
-	this.getRLow = function ( ) {
-		return this.rLow;
-	};
-  
-	this.getREst = function ( ) {
-		return this.rEst;
-	};
+Property.prototype.getRLow = function() {
+	return this.rLow;
+};
 
-	this.getRHigh = function ( ) {
-		return this.rHigh;
-	};
+Property.prototype.getREst = function() {
+	return this.rEst;
+};
 
-	this.getRRange = function ( ) {
-		return this.rRange;
-	};
+Property.prototype.getRHigh = function() {
+	return this.rHigh;
+};
+
+Property.prototype.getRRange = function() {
+	return this.rRange;
+};
+
+String.prototype.replaceAll = function(needle, replaceTo) {
+ var str = this.replace(new RegExp(needle, 'g'), replaceTo);
+  return str;
+};
+
+function getAPIcall(prop) {
+  var address = prop.getNumber() + "+" + prop.getStreet();
+  address = address.replaceAll(" ", "+");
+  var zip = prop.getZip();
+  var apiHeader = "http://www.zillow.com/webservice/GetSearchResults.htm?";
+  var zwsID = "zws-id=X1-ZWz1b0j5f2l72j_9hc6e";
+  var rentZestimate = "rentzestimate=true";
+  return apiHeader + zwsID + "&address=" + address + "&citystatezip=" + zip + "&" + rentZestimate;
 }
 
 var prop1 = new Property(1118, "N Congress St", "Ypsilanti", "MI", 48197);
 prop1.setValues(142000, 156000, 168000, 1100, 1300, 1500);
 
-API.getCall();
 document.write("Rent ratio for " + prop1.getFullAddress() + ": " + prop1.getPriceRentRatio());
 document.write("<br>");
-document.write(API.getCall(prop1.getFullAddress()));
+document.write(getAPIcall(prop1));
+window.location.href=getAPIcall(prop1);
