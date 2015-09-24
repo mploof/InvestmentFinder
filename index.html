@@ -7,19 +7,22 @@
 
 	<body>
 		<h1>Zillow Investment Finder</h1>
-		<p>Input the address you're looking for</p>
+		<p>Input the address range you're looking for</p>
 		<title>Script Test</title>
 		<form id="inputForm" action="submit.php" method="post">
-			Number: <br>
-			<input type="text" name="number" id="number" size="6">
+			Start Number: <br>
+			<input type="text" name="start" id="number" size="6">
+				<br><br>
+			Stop Number: <br>
+			<input type="text" name="stop" id="number" size="6">
 				<br><br>
 			Street: <br>
 			<input type="text" name="street" id="street" size="12">
 			<br><br>
 			City: <br>
 			<select name="city" id="city">
-				<option value="ann arbor">Ann Arbor</option>
 				<option value="ypsilanti">Ypsilanti</option>
+				<option value="ann arbor">Ann Arbor</option>				
 				<option value="detroit">Detroit</option>
 			</select>
 			<br><br>
