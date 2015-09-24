@@ -111,10 +111,149 @@ function getAPIcall(prop) {
   return apiHeader + zwsID + "&address=" + address + "&citystatezip=" + zip + "&" + rentZestimate;
 }
 
-var prop1 = new Property(1118, "N Congress St", "Ypsilanti", "MI", 48197);
-prop1.setValues(142000, 156000, 168000, 1100, 1300, 1500);
+function getInput() {
+  var number = document.getElementById("number").value;
+  var street = document.getElementById("street").value;
+  var city = document.getElementById("city").value;
+  var state = document.getElementById("state").value;
+  var zip = document.getElementById("zip").value;
+  document.getElementById("output").innerHTML =
+    (number + " " + street + " " + city + " " + state + " " + zip);
+  var newProp = new Property(parseInt(number), street, city, state, parseInt(zip));
+  return newProp;
+}
 
-document.write("Rent ratio for " + prop1.getFullAddress() + ": " + prop1.getPriceRentRatio());
-document.write("<br>");
-document.write(getAPIcall(prop1));
-window.location.href=getAPIcall(prop1);
+$.ajax({
+    type: "GET",
+    url: "http://www.w3schools.com/ajax/cd_catalog.xml",
+    dataType: "xml",
+    success: function (xml) {
+
+        // Parse the xml file and get data
+        var xmlDoc = $.parseXML(xml),
+            $xml = $(xmlDoc);
+        $xml.find('address[name="My t"] logo').each(function () {
+            $("#results").append($(this).text() + "<br />");
+        });
+    }
+});
+
+function search(){
+
+  // Get use input from HTML page
+  var prop = getInput();
+
+  // Generate the API call
+  var call = getAPIcall(prop);
+  document.getElementById("APIoutput").innerHTML = call;
+
+  // Open the XML file
+  loadXMLDoc(call);
+}
+
+function loadXMLDoc(url)
+{
+var xmlhttp;
+var txt,x,xx,i;
+
+xmlhttp=new XMLHttpRequest();
+
+xmlhttp.onreadystatechange=function()
+  {
+    document.getElementById("output").innerHTML = xmlhttp.readyState;
+    document.getElementById("APIoutput").innerHTML = xmlhttp.status;
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    txt="<table border='1'><tr><th>Title</th><th>Artist</th></tr>";
+    x=xmlhttp.responseXML.documentElement.getElementsByTagName("CD");
+    for (i=0;i<x.length;i++)
+      {
+      txt=txt + "<tr>";
+      xx=x[i].getElementsByTagName("TITLE");
+        {
+        try
+          {
+          txt=txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+          }
+        catch (er)
+          {
+          txt=txt + "<td> </td>";
+          }
+        }
+      xx=x[i].getElementsByTagName("ARTIST");
+        {
+        try
+          {
+          txt=txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+          }
+        catch (er)
+          {
+          txt=txt + "<td> </td>";
+          }
+        }
+      txt=txt + "</tr>";
+      }
+    txt=txt + "</table>";
+    //document.getElementById('results').innerHTML=txt;
+    document.getElementById("APIoutput").innerHTML = "running function";
+    }
+  }
+xmlhttp.open("GET",url,true);
+xmlhttp.send();
+}
+
+function loadXMLDoc_foad(url) {
+  var xmlhttp;
+  var txt, x, xx, i;
+  xmlhttp=new XMLHttpRequest();
+
+  xmlhttp.onreadystatechange=function() {
+
+    document.getElementById('results').innerHTML="Executing request";
+
+    // Check ready state
+    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+      document.getElementById('results').innerHTML="State is ok";
+
+      // Create table text
+      txt = "<table border='1'><tr><th>Address</th><th>Price</th></tr>";
+
+      // Get all address elements
+      x = xmlhttp.responseXML.documentElement.getElementsByTagName("address");
+
+      // Iterate for each address
+      for (i=0; i < x.length; i++) {
+
+        txt = txt + "<tr>";
+
+        xx = x[i].getElementsByTagName("street");
+        {
+          try {
+            txt = txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+          }
+          catch (er) {
+            txt = txt + "<td> </td>";
+          }
+        }
+
+        xx = x[i].getElementsByTagName("city");
+        {
+          try {
+            txt = txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+          }
+          catch (er) {
+            txt = txt + "<td> </td>";
+          }
+        }
+        txt = txt + "</tr>";
+
+      }
+
+      txt = txt + "</table>";
+      document.getElementById('results').innerHTML="test";
+    }
+  }
+
+  xmlhttp.open("GET",url,true);
+  xmlhttp.send();
+}
